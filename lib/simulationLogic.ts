@@ -134,7 +134,9 @@ export function simulateFallbackDecision(
         3,
         metrics.investorPressure - 2
       );
-      updated.valuation *= 1 + 0.1 * fundingMultiplier;
+      const currentValuation =
+        updated.valuation ?? metrics.cash * 10 + metrics.growthRate * 100000;
+      updated.valuation = currentValuation * (1 + 0.1 * fundingMultiplier);
       opportunities.push(
         "New funding extends runway and unlocks strategic initiatives."
       );
