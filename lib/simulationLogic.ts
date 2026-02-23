@@ -6,6 +6,7 @@ export type CompanyMetrics = {
   growthRate: number;
   investorPressure: number; // 0–10
   customerSatisfaction: number; // 0–100
+  valuation?: number; // optional for scenarios where valuation is tracked
 };
 
 export type MarketConditions = {
