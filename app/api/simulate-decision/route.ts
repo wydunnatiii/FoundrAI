@@ -61,19 +61,29 @@ Return a JSON object with:
 
 Strictly respond with valid JSON, no markdown, no commentary.`;
 
-  const completion = await client.responses.create({
+  const completion = await client.chat.completions.create({
     model: "gpt-4.1-mini",
-    input: prompt,
-    response_format: { type: "json_object" }
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are an experienced startup operator and VC. Always respond with pure JSON only, no markdown, no commentary."
+      },
+      {
+        role: "user",
+        content: prompt
+      }
+    ],
+    temperature: 0.2
   });
 
-  const content = completion.output[0]?.content?.[0];
-  if (!content || content.type !== "output_text") {
+  const content = completion.choices[0]?.message?.content;
+  if (!content) {
     return null;
   }
 
   try {
-    const parsed = JSON.parse(content.text()) as SimulationResult;
+    const parsed = JSON.parse(content) as SimulationResult;
     return parsed;
   } catch {
     return null;
